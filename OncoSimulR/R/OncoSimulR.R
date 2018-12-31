@@ -2043,6 +2043,34 @@ is_null_na <- function(x) {
         return(FALSE)
     }
 }
+                   
+muller_plot <- function (x, type){
+  if (!(class(x) %in% c("oncosimul", "oncosimul2"))) 
+    stop("Type of object class must be one of:", " oncosimul or oncosimul2")
+  
+  if (!(type %in% c("population", "frequency"))) 
+    stop("Type of muller plot unknown: it must be one of", " population or frequency")
+  
+  matriz_adj <- get.adjacency(plotClonePhylog(x, N = 0,returnGraph = TRUE))
+  colnames(matriz_adj)[1] <- "WT"
+  row.names(matriz_adj)[1] <- "WT"
+  
+  lista_edges <- get.edgelist(graph.adjacency(matriz_adj))
+  edges_tmp <- data.frame(Parent = lista_edges[,1], Identity = lista_edges[,2])
+  
+
+  ltmp <- OncoSimulWide2Long(x)
+  pop_ltmp <- data.frame(Generation = ltmp$Time, Identity = ltmp$Genotype, 
+                         Population = ltmp$Y)
+  pop_ltmp[is.na(pop_ltmp)] <- 0
+  ggmuller:::Prueba2_ggmuller <-  ggmuller:::get_Muller_df(edges_tmp, pop_ltmp)
+  if (type == "frequency"){
+    ggmuller:::Muller_plot(Prueba2_ggmuller, add_legend = TRUE, xlab = "Generation", ylab = "Proportion")
+  }
+  if (type == "population"){
+    ggmuller:::Muller_pop_plot(Prueba2_ggmuller, add_legend = TRUE, xlab = "Generation", ylab = "Proportion")
+  }
+}  
 
 
 ## Not used anymore, but left here in case they become useful.
