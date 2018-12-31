@@ -49,7 +49,6 @@ importFrom("igraph", igraph.to.graphNEL, graph.data.frame, V, E,
            "V<-", "E<-", plot.igraph, layout.reingold.tilford,
            delete.vertices, neighborhood, get.adjacency)
 import(ggmuller)
-importFrom("Muller_plot", "Muller_plot_pop", "get_Muller_df")
 import(graph)
 import(Rgraphviz)
 importFrom("parallel", mclapply, detectCores, mcMap)
